@@ -3,14 +3,23 @@
 	<script src="js/jquery-2.2.0.min.js"></script>
 	<script>
 		function callbackend() {
-			
+			console.log(document.getElementById("image_url").value);
+			$.ajax({
+			  method: "POST",
+			  url: "findPhotoTags",
+			  data: { image_url: document.getElementById("image_url").value },
+			  success: function(data) {
+			  	var returnedData = $.parseJSON(data);
+			  	console.log(returnedData);
+			  }
+			});
 		}
 	</script>
 </head>
 <body>
 
 	<h1>Photoverse</h1>
-	<input name="image_url" id="image_url" type="text">
+	<input name="image_url" id="image_url" type="url">
 	<button onclick="callbackend()">Submit</button>
 </body>
 </html>

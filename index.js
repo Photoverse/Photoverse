@@ -58,7 +58,12 @@ server.listen(port, function() {
 });
 
 app.post('/findPhotoTags', function(req, res) {
-	
+    var image_url = req.body.image_url;
+	 
+   clarifai_client.tagFromUrls('image', image_url, function(err, results) {
+      console.log(results);
+      res.send(JSON.stringify(results));
+   }, null);
 });
 
 
