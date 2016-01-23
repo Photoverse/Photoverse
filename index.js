@@ -10,6 +10,9 @@ var request = require('request');
 var stylus = require('stylus');
 var Clarifai = require('clarifai');
 var DomParser = require('dom-parser');
+var cheerio = require('cheerio');
+// var jsdom = require('jsdom');
+
 var parser = new DomParser();
 
 var app = express();
@@ -43,13 +46,15 @@ clarifai_client.getAccessToken(function(err, accessToken) {
 });
 
 function parseBody(body) {
+
     var parsed = parser.parseFromString(body);
-    console.log(parsed);
-    var dom = parsed.getElementsByClassName('tooltip_container');
+    
+    var $ = cheerio.load(parsed);
 
-    console.log(dom);
-
-    console.log(dom[0]);
+    $('.mix_url').each(function(i, elem) {
+      console.log(elem.attr('href'));
+    });
+    console.log($('.mix_url'));
 
 }
 
@@ -66,13 +71,14 @@ function getEightTracksHTML(tags) {
     }
     url += "/popular"
     console.log(url);
+    
     request(url, function(error, response, body) {
       if(!error && response.statusCode == 200) {
         parseBody(body);
       } else {
         console.log(error);
       }
-    })  
+    });
 }
 
 
