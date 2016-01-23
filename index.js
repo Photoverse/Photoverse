@@ -42,9 +42,20 @@ clarifai_client.getAccessToken(function(err, accessToken) {
 	}
 });
 
+function parseBody(body) {
+    var parsed = parser.parseFromString(body);
+    console.log(parsed);
+    var dom = parsed.getElementsByClassName('tooltip_container');
+
+    console.log(dom);
+
+    console.log(dom[0]);
+
+}
+
 // Request address and return it's HTML
 function getEightTracksHTML(tags) {
-    console.log(JSON.stringify(tags));
+    
     var url = "http://8tracks.com/explore/";
     for (var i = 0; i < 2; i++) {
         if (i == 0) {
@@ -54,10 +65,10 @@ function getEightTracksHTML(tags) {
         }
     }
     url += "/popular"
-    
+    console.log(url);
     request(url, function(error, response, body) {
       if(!error && response.statusCode == 200) {
-        console.log(body);
+        parseBody(body);
       } else {
         console.log(error);
       }
