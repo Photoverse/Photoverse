@@ -5,9 +5,18 @@ var clarifai_access_token_header = "grant_type=client_credentials"
 var clarifai_access_token = null;
 
 var express = require('express');
-var bodyParser = require('body-parser');
-var stylus = require('stylus');
+var request = require('request');
 var Clarifai = require('clarifai');
+var DomParser = require('dom-parser');
+var parser = new DomParser();
+
+var app = express();
+
+app.use(function (req, res) {
+  res.setHeader('Content-Type', 'text/plain')
+  res.write('you posted:\n')
+  res.end(JSON.stringify(req.body, null, 2))
+})
 
 clarifai_client = new Clarifai({
   id: "7XcRYTSUu-X4tt2-3ojUsaepRtfPpHgk5VtvQn0n",
@@ -20,30 +29,19 @@ clarifai_client.getAccessToken(function(err, accessToken) {
 	}
 });
 
-var app = express();
-
-  // Middleware to compile `styl` files to `css`.
-  // For example, `assets/stylesheets/main.styl` will be compiled to `public/stylesheets/main.css`
-  app.use(stylus.middleware({
-    // Source directory
-    src: __dirname + '/assets/stylesheets',
-    // Destination directory
-    dest: __dirname + '/public',
-    // Compile function
-    compile: function(str, path) {
-      return stylus(str)
-        .set('filename', path)
-        .set('compress', true);
-        }
-    }));
+// Request address and return it's HTML
+request('http://nhl.com/index.html', function(error, response, body) {
+	if(!error && response.statusCode == 200) {
+		console.log(body);
+	} else {
+		console.log(error);
+	}
+})
 
 app.enable('trust proxy');
 
 // Routing to the user
 app.use(express.static(__dirname + "/public"));
-
-app.use(bodyParser.json()); // support json encoded bodies
-app.use(bodyParser.urlencoded({ extended: true })); // support encoded bodies
 
 var server = require('http').createServer(app);
 var port = process.env.PORT || 3000;
