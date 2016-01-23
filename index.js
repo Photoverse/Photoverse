@@ -2,6 +2,9 @@
 var clarifai_access_token_request = "https://7XcRYTSUu-X4tt2-3ojUsaepRtfPpHgk5VtvQn0n:8KU5maZusTMVL3PL7ZbXw_VOuD42shAhJM-1RrAB@api.clarifai.com/v1/token/"
 var clarifai_access_token_header = "grant_type=client_credentials"
 
+var iframeStart = '<iframe src="http://8tracks.com/mixes/';
+var iframeEnd = '/player_v3_universal" width="400" height="400" style="border: 0px none;"></iframe>';
+
 var clarifai_access_token = null;
 
 var bodyParser = require('body-parser');
@@ -81,6 +84,10 @@ function getEightTracksHTML(tags) {
     });
 }
 
+// Use for every playlist returned from 
+function iframe (resultNumber, playlistId) {
+	document.getElementById("playlist" + resultNumber).innerHTML = iframeStart + playlistId + iframeEnd; 
+}
 
 app.enable('trust proxy');
 
