@@ -54,6 +54,8 @@ function parseBody(body) {
     
     var $ = cheerio.load(parsed);
 
+    console.log($);
+
     $('.mix_url').each(function(i, elem) {
       console.log(elem.attr('href'));
     });
