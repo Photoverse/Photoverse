@@ -59,13 +59,11 @@ function parseBody(body) {
 		urls[index] = iframeText(index, playlists[index]);
 	}
 	
-	iframes = {"iframes": urls};
-	
-	console.log(iframes);
+	return {"iframes": urls};
 }
 
 // Request address and return it's HTML
-function getEightTracksHTML(tags) {
+function getEightTracksHTML(tags, res) {
     
     var url = "http://8tracks.com/explore/";
     for (var i = 0; i < 2; i++) {
@@ -80,9 +78,9 @@ function getEightTracksHTML(tags) {
     
     request(url, function(error, response, body) {
       if(!error && response.statusCode == 200) {
-        parseBody(body);
+			res.send(JSON.stringify(parseBody(body)));
       } else {
-        console.log(error);
+			console.log(error);
       }
     });
 }
@@ -117,8 +115,7 @@ app.post('/findPhotoTags', function(req, res) {
 	 
    clarifai_client.tagFromUrls('image', image_url, function(err, results) {
       console.log(results);
-      getEightTracksHTML(results.tags);
-      // res.send(JSON.stringify(results));
+      var results = getEightTracksHTML(results.tags, res);
    }, null);
 });
 
