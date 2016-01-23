@@ -4,19 +4,32 @@ var clarifai_access_token_header = "grant_type=client_credentials"
 
 var clarifai_access_token = null;
 
+var bodyParser = require('body-parser');
 var express = require('express');
 var request = require('request');
+var stylus = require('stylus');
 var Clarifai = require('clarifai');
 var DomParser = require('dom-parser');
 var parser = new DomParser();
 
 var app = express();
 
-app.use(function (req, res) {
-  res.setHeader('Content-Type', 'text/plain')
-  res.write('you posted:\n')
-  res.end(JSON.stringify(req.body, null, 2))
-})
+app.use(bodyParser.urlencoded({ extended: false }));
+
+app.use(bodyParser.json());
+
+app.use(stylus.middleware({
+ // Source directory
+     src: __dirname + '/assets/stylesheets',
+     // Destination directory
+     dest: __dirname + '/public',
+     // Compile function
+     compile: function(str, path) {
+       return stylus(str)
+         .set('filename', path)
+         .set('compress', true);
+         }
+     }));
 
 clarifai_client = new Clarifai({
   id: "7XcRYTSUu-X4tt2-3ojUsaepRtfPpHgk5VtvQn0n",
@@ -30,13 +43,27 @@ clarifai_client.getAccessToken(function(err, accessToken) {
 });
 
 // Request address and return it's HTML
-request('http://nhl.com/index.html', function(error, response, body) {
-	if(!error && response.statusCode == 200) {
-		console.log(body);
-	} else {
-		console.log(error);
-	}
-})
+function getEightTracksHTML(tags) {
+    console.log(JSON.stringify(tags));
+    var url = "http://8tracks.com/explore/";
+    for (var i = 0; i < 2; i++) {
+        if (i == 0) {
+          url += tags[i].class;
+        } else {
+          url += "+"+tags[i].class;
+        }
+    }
+    url += "/popular"
+    
+    request(url, function(error, response, body) {
+      if(!error && response.statusCode == 200) {
+        console.log(body);
+      } else {
+        console.log(error);
+      }
+    })  
+}
+
 
 app.enable('trust proxy');
 
@@ -58,11 +85,13 @@ server.listen(port, function() {
 });
 
 app.post('/findPhotoTags', function(req, res) {
+    console.log(req.body);
     var image_url = req.body.image_url;
 	 
    clarifai_client.tagFromUrls('image', image_url, function(err, results) {
       console.log(results);
-      res.send(JSON.stringify(results));
+      getEightTracksHTML(results.tags);
+      // res.send(JSON.stringify(results));
    }, null);
 });
 
