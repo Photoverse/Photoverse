@@ -4,7 +4,6 @@
   "description": "photoverse web app",
   "dependencies": {
     "body-parser": "^1.14.1",
-    "dom-parser":"^0.1.5",
     "express": "^4.10.2",
     "js-sha512": "^0.2.*",
     "request": "^2.58.0",
