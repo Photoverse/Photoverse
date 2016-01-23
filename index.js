@@ -88,7 +88,7 @@ function getEightTracksHTML(tags) {
 
 // Use for every playlist returned from 
 function iframe (resultNumber, playlistId) {
-	document.getElementById("playlist" + resultNumber).innerHTML = iframeStart + playlistId + iframeEnd; 
+	return iframeStart + playlistId + iframeEnd; 
 }
 
 app.enable('trust proxy');
