@@ -49,13 +49,19 @@ function parseBody(body) {
     var $ = cheerio.load(body);
 
     var playlists = [];
+	var urls = [];
+	
+	$('.quick_add').each(function(i, elem) {
+		playlists.push(elem.attribs['data-mix_id']);
+	});
 
-    $('.mix_url').each(function(i, elem) {
-      playlist.push(elem.attribs.href);
-    });
-
-
-
+	for(var index in playlists) {
+		urls[index] = iframeText(index, playlists[index]);
+	}
+	
+	iframes = {"iframes": urls};
+	
+	console.log(iframes);
 }
 
 // Request address and return it's HTML
@@ -82,8 +88,8 @@ function getEightTracksHTML(tags) {
 }
 
 // Use for every playlist returned from 
-function iframe (resultNumber, playlistId) {
-	return iframeStart + playlistId + iframeEnd; 
+function iframeText (resultNumber, playlistId) {
+	return {"iframe": iframeStart + playlistId + iframeEnd}; 
 }
 
 app.enable('trust proxy');
