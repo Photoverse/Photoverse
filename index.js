@@ -52,14 +52,15 @@ function parseBody(body) {
 
     var parsed = parser.parseFromString(body);
     
-    var $ = cheerio.load(parsed);
+    var $ = cheerio.load(body);
 
-    console.log($);
+    var playlists = [];
 
     $('.mix_url').each(function(i, elem) {
-      console.log(elem.attr('href'));
+      playlist.push(elem.attribs.href);
     });
-    console.log($('.mix_url'));
+
+    
 
 }
 
