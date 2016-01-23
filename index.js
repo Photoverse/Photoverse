@@ -49,17 +49,21 @@ function parseBody(body) {
     var $ = cheerio.load(body);
 
     var playlists = [];
+	var urls = [];
+	
+	$('.quick_add').each(function(i, elem) {
+		playlists.push(elem.attribs['data-mix_id']);
+	});
 
-    $('.mix_url').each(function(i, elem) {
-      playlist.push(elem.attribs.href);
-    });
-
-
-
+	for(var index in playlists) {
+		urls[index] = iframeText(index, playlists[index]);
+	}
+	
+	return {"iframes": urls};
 }
 
 // Request address and return it's HTML
-function getEightTracksHTML(tags) {
+function getEightTracksHTML(tags, res) {
     
     var url = "http://8tracks.com/explore/";
     for (var i = 0; i < 2; i++) {
@@ -74,16 +78,16 @@ function getEightTracksHTML(tags) {
     
     request(url, function(error, response, body) {
       if(!error && response.statusCode == 200) {
-        parseBody(body);
+			res.send(JSON.stringify(parseBody(body)));
       } else {
-        console.log(error);
+			console.log(error);
       }
     });
 }
 
 // Use for every playlist returned from 
-function iframe (resultNumber, playlistId) {
-	return iframeStart + playlistId + iframeEnd; 
+function iframeText (resultNumber, playlistId) {
+	return {"iframe": iframeStart + playlistId + iframeEnd}; 
 }
 
 app.enable('trust proxy');
@@ -111,8 +115,7 @@ app.post('/findPhotoTags', function(req, res) {
 	 
    clarifai_client.tagFromUrls('image', image_url, function(err, results) {
       console.log(results);
-      getEightTracksHTML(results.tags);
-      // res.send(JSON.stringify(results));
+      var results = getEightTracksHTML(results.tags, res);
    }, null);
 });
 
