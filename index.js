@@ -12,11 +12,7 @@ var express = require('express');
 var request = require('request');
 var stylus = require('stylus');
 var Clarifai = require('clarifai');
-var DomParser = require('dom-parser');
 var cheerio = require('cheerio');
-// var jsdom = require('jsdom');
-
-var parser = new DomParser();
 
 var app = express();
 
@@ -49,8 +45,6 @@ clarifai_client.getAccessToken(function(err, accessToken) {
 });
 
 function parseBody(body) {
-
-    var parsed = parser.parseFromString(body);
     
     var $ = cheerio.load(body);
 
@@ -60,7 +54,7 @@ function parseBody(body) {
       playlist.push(elem.attribs.href);
     });
 
-    
+
 
 }
 
