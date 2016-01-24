@@ -11,17 +11,25 @@
     <script src="js/main.js"></script>
     <script>
         function callbackend() {
-            console.log(document.getElementById("image_url").value);
-            createSearch(document.getElementById("image_url").value);
+
+        	var url = document.getElementById("image_url").value;
+
+        	if (url.length < 5 || (!url.indexOf(".jpg") > -1 && url.indexOf(".jpeg") > -1 && url.indexOf(".png") > -1)) {
+        		return;
+        	}
+
+            console.log(url);
+            createSearch(url);
             $.ajax({
                 method: "POST",
                 url: "findPhotoTags",
                 data: {
-                    image_url: document.getElementById("image_url").value
+                    image_url: url
                 },
                 success: function (data) {
                     var returnedData = $.parseJSON(data);
 
+                    console.log(returnedData);
                     var count = 0;
 
                     $(".tag_list > li:first-child > .content > ul > img").remove();

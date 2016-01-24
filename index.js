@@ -66,27 +66,81 @@ function parseBody(body, tags) {
   	return {"iframes": urls, "tags": mainTags};
 }
 
+var requestResults = [];
+
+function chooseOne() {
+    console.log("Results:");
+    console.log(requestResults);
+    for (var i = requestResults.length - 1; i >= 0; i--) {
+        if (requestResults[i].iframes.length < 12 || i == 0) {
+            console.log(requestResults[i].iframes);
+            console.log(i);
+            console.log(requestResults[i].tags);
+            return requestResults[i];
+        }
+    }
+}
+
 // Request address and return it's HTML
 function getEightTracksHTML(tags, res) {
     
-    var url = "http://8tracks.com/explore/";
-    for (var i = 0; i < 2; i++) {
-        if (i == 0) {
-          url += tags[i].class;
-        } else {
-          url += "+"+tags[i].class;
+    var customTags = [];
+
+
+    for (var i = 1; i < 6; i++) {
+        var url = "http://8tracks.com/explore/";
+        for (var x = 0; x < i; x++) {
+            customTags.push(tags[x].class);
+            if (x == 0) {
+              url += tags[x].class;
+            } else {
+              url += "+"+tags[x].class;
+            }
         }
+        console.log(url);
+        request(url, function(error, response, body) {
+          if(!error && response.statusCode == 200) {
+
+              
+                 // return returnValues;
+                 // res.send(JSON.stringify(parseBody(body,tags)));
+                 requestResults.push(parseBody(body,tags));
+                 console.log("Result: ");
+                 console.log(requestResults);
+                 if (requestResults.length >= 5) {
+                    res.send(JSON.stringify(chooseOne()));
+                    requestResults = [];
+                 }
+          } else {
+          console.log(error);
+          }
+        });
+        customTags = [];
     }
+    // var url = "http://8tracks.com/explore/";
+    // for (var i = 0; i < 2; i++) {
+    //     if (i == 0) {
+    //       url += tags[i].class;
+    //     } else {
+    //       url += "+"+tags[i].class;
+    //     }
+    // }
     // url += "/popular"
-    console.log(url);
-    
-    request(url, function(error, response, body) {
-      if(!error && response.statusCode == 200) {
-			   res.send(JSON.stringify(parseBody(body, tags)));
-      } else {
-			console.log(error);
-      }
-    });
+    // console.log(url);
+    // var returnValues = null;
+    // var i = 0;
+    // var newTags = tags;
+    // // Check amount of playlists.
+    // for (i = 5; i > 0; i--) {
+    //   newTags = newTags.splice(0, i);
+    //   console.log("Trying to find: " + newTags);
+    //   returnValues = parseBody(body, newTags);
+    //   if (returnValues.iframes.length > 0) {
+    //     i = 0;
+    //   } else {
+    //     newTags = tags;
+    //   }
+    // }
 }
 
 // Use for every playlist returned from 
