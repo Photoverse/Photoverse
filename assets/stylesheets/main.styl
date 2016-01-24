@@ -1,4 +1,9 @@
 
+darkpurple = #37314A;
+midblue = #01AAE2;
+tealblue = rgba(1, 113, 160, 0.4);
+lightergray = rgba(128, 128, 128, 0.46);
+
 
 @font-face {
     font-family: 'ChampLim';
@@ -129,10 +134,6 @@ body {
     font-weight: bold;
 }
 
-.light-text {
-    color: rgba(255, 255, 255, 0.8) !important;
-    font-size: 175%;
-}
 .DownArrow {
 	opacity: 0.5;
 	width: 5em;
@@ -140,4 +141,126 @@ body {
 .DownArrow:hover, .DownArrrow:focus {
 	opacity: 0.8;
 	width: 5.5em;
+}
+
+
+
+.page2 {
+	height:700px;
+
+	.sub_heading {
+		color: black;
+		font-size: 4em;
+		margin-bottom: 50x;
+	}
+
+	.input_field {
+		width:500px;
+
+		input {
+			width: 100%;
+		    font-size: 1.5em;
+		    border: 0px;
+		    border-bottom: 2px solid lightergray;
+
+			
+		}
+
+		input:hover, input:focus, input:active {
+			border:0px;
+			border-bottom: 2px solid tealblue;
+			outline:0px;
+			color:#01AAE2;
+			transform: scale(1.0075, 1.0075);
+			
+			-webkit-transition:0.25s linear;
+            transition:0.25s linear;
+		}
+
+		input:hover::-webkit-input-placeholder, input:focus::-webkit-input-placeholder, input:active::-webkit-input-placeholder { /* WebKit, Blink, Edge */
+		    color:    tealblue;
+		}
+		input:hover:-moz-placeholder, input:focus:-moz-placeholder, input:active:-moz-placeholder { /* Mozilla Firefox 4 to 18 */
+		   color:    tealblue;
+		   opacity:  1;
+		}
+		input:hover::-moz-placeholder, input:focus::-moz-placeholder, input:active::-moz-placeholder { /* Mozilla Firefox 19+ */
+		   color:    tealblue;
+		   opacity:  1;
+		}
+		input:hover:-ms-input-placeholder, input:focus:-ms-input-placeholder, input:active:-ms-input-placeholder { /* Internet Explorer 10-11 */
+		   color:    tealblue;
+		}
+		input:hover:placeholder-shown, input:focus:placeholder-shown, input:active:placeholder-shown { /* Standard (https://drafts.csswg.org/selectors-4/#placeholder) */
+		  color:    tealblue;
+		}
+
+		a {
+			width:100%;
+			font-size:1.2em;
+			text-decoration: none;
+			float:left;
+			background-color:lightergray;
+			margin-top:3px;
+			height:30px;
+			line-height:30px;
+		}
+
+		a:hover, a:focus, a:active {
+			cursor:pointer;
+			color:black;
+			background-color:tealblue;
+			outline:0;
+			color:white;
+
+			font-weight:bold;
+
+			-ms-transform: translate(0px, 2px); /* IE 9 */
+		   	-webkit-transform: translate(0px, 2px); /* Safari */
+		    transform: translate(0px, 2px);
+
+			-webkit-transition:0.25s linear;
+            transition:0.25s linear;
+		}
+	}
+}
+
+.page3 {
+	.tag_display {
+		width:750px;
+		border:0px;
+		ul {
+			padding:0px;
+			list-style:none;
+			margin:0px;
+
+			li {
+				height:300px;
+				
+				.tagImages {
+					display:inline-block;
+					width:35%;
+					img {
+						display:inline-block;
+						width:95%;
+					}
+				}
+
+				.content {
+					width:65%;
+					display:inline-block;
+
+					ul {
+						list-style:none;
+						padding:0px;
+						li {
+							iframe {
+								height:150px;
+							}
+						}
+					}
+				}
+			}
+		}
+	}
 }
