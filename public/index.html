@@ -3,10 +3,10 @@
 <head>
     <!-- CSS -->
     <link rel="stylesheet" href="../assets/stylesheets/main.css" type="text/css">
-    <!-- JavaScript -->
-
     <!-- jQuery -->
     <script src="js/jquery-2.2.0.min.js"></script>
+    <!-- JavaScript -->
+    <script src="js/main.js"></script>
     <script>
         function callbackend() {
             console.log(document.getElementById("image_url").value);
@@ -27,27 +27,21 @@
 
 <body>
     <div class="wrapper">
-        <div id="heading-logo" class="top-logo">
-            <h2 class="logo-name">Heading Logo</h2>
-        </div>
-
-
         <center>
             <!-- Page 1 Is the title page -->
             <div class="fade-background">
-                <div class="main-div page">
-                    <img id="main-logo" class="main-logo" src="Pictures/logo.png"></img>
+                <div id="page1" class="main-div page">
+                    <img id="main-logo" class="main-logo" src="Pictures/logo.png">
                     <p class="description">Photoverse lets you find a playlist for any situation! Just upload a picture </p>
                     <a href="#page2">
                         <button class="button1">Start!</button>
                     </a>
-                    <a name="page2"></a>
                 </div>
                 <!-- Page 2 is where the user uploads the photo, it also displays their image -->
-                <div class="page2 page">
+                <div id="page2s" class="page2 page">
                     <h2 class="Sub-heading">Try It Out!</h2>
-                    <!--<img src="" class="uploaded-image"></img>-->
-                    <input id="url-input" class="url-input link-text" placeholder="  Paste your link here..."></input>
+                    <!--<img src="" class="uploaded-image">-->
+                    <input id="url-input" class="url-input link-text" placeholder="  Paste your link here...">
 
                     <a href="#page3" class="light-text">
                         <button class="url-submit-button" action="submit-url">Click here to submit</button>
@@ -56,8 +50,7 @@
                 </div>
             </div>
             <!-- Page 3 displays the results-->
-            <a name="page3 page"></a>
-            <div name="page3" class="page3">
+            <div id="page3" class="page">
                 <h2 class="Sub-heading">Try out these playlists</h2>
 
                 <div class="tag-display">
