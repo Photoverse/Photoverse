@@ -1,11 +1,11 @@
 @font-face {
     font-family: 'ChampLim';
-    src: url('fonts/Champagne&Limousines.woff') format('woff');
+    src: url('../../public/fonts/Champagne&Limousines.woff') format('woff');
 
 }
 body {
   
-     background: url('../../Public/pictures/MountainBackground.jpg');
+     background: url('../../public/pictures/MountainBackground.jpg');
      background-size: cover;
      background-repeat:no-repeat;
      display: compact;
