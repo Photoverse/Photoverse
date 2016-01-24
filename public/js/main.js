@@ -4,7 +4,7 @@ $(document).ready(function () {
     
     $(window).resize(function(){
         windowSize = $(window).height();
-        $('.page').height($(window).height());
+        // $('.page').height($(window).height());
     });
 
     $('#get-started').click(function () {

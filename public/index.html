@@ -29,16 +29,21 @@
                 success: function (data) {
                     var returnedData = $.parseJSON(data);
 
+                    if (returnedData.success == "Failure") {
+                    	$(".tag_list > li:first-child").remove();
+                    }
+
                     console.log(returnedData);
+
                     var count = 0;
 
                     $(".tag_list > li:first-child > .content > ul > img").remove();
 
                     for (var iframe in returnedData.iframes) {
+                        if (count <= 5) {
+                        	$(".tag_list > li:first-child > .content > ul").append("<li>" + returnedData.iframes[iframe].iframe + "</li>");
+                        }
                         count += 1;
-                        // if (count <= 2) {
-                        $(".tag_list > li:first-child > .content > ul").append("<li>" + returnedData.iframes[iframe].iframe + "</li>");
-                        // }
                     }
 
                     var tags = "";

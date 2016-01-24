@@ -61,86 +61,73 @@ function parseBody(body, tags) {
   		urls[index] = iframeText(index, playlists[index]);
   	}
 
-    var mainTags = tags.slice(0,2);
+    // var mainTags = tags.slice(0,2);
   	
-  	return {"iframes": urls, "tags": mainTags};
+  	return {"iframes": urls, "tags": tags};
 }
 
 var requestResults = [];
 
 function chooseOne() {
-    console.log("Results:");
-    console.log(requestResults);
+    // console.log(requestResults.length);
     for (var i = requestResults.length - 1; i >= 0; i--) {
+        // console.log(i);
         if (requestResults[i].iframes.length < 12 || i == 0) {
-            console.log(requestResults[i].iframes);
-            console.log(i);
-            console.log(requestResults[i].tags);
+            // console.log(requestResults[i].iframes);
+            // console.log(i);
+            // console.log("Tags: " + requestResults[i].tags);
             return requestResults[i];
         }
     }
 }
 
+var tempCounter = 0;
+
 // Request address and return it's HTML
 function getEightTracksHTML(tags, res) {
     
-    var customTags = [];
-
-
-    for (var i = 1; i < 6; i++) {
+    // console.log("TAGS: " + tags);
+    for (var i = 1; i < 6 && i < tags.length; i++) {
         var url = "http://8tracks.com/explore/";
         for (var x = 0; x < i; x++) {
-            customTags.push(tags[x].class);
             if (x == 0) {
               url += tags[x].class;
             } else {
               url += "+"+tags[x].class;
             }
         }
-        console.log(url);
+        // console.log(url);
+
         request(url, function(error, response, body) {
           if(!error && response.statusCode == 200) {
 
-              
+                // console.log(response.request.uri.href);
+                var href = ""+response.request.uri.href;
+                // console.log(href);
                  // return returnValues;
                  // res.send(JSON.stringify(parseBody(body,tags)));
-                 requestResults.push(parseBody(body,tags));
-                 console.log("Result: ");
-                 console.log(requestResults);
-                 if (requestResults.length >= 5) {
-                    res.send(JSON.stringify(chooseOne()));
+                 if (href != "http://8tracks.com/explore/all") {
+                    requestResults.push(parseBody(body,tags));
+                    // console.log(href);
+                 }
+                 tempCounter += 1;
+                 // console.log("Result: ");
+                 // console.log(requestResults);
+                 if (tempCounter >= 5) {
+                    if (requestResults.length > 0) {
+                      res.send(JSON.stringify(chooseOne()));
+                    } else {
+                      res.send(JSON.stringify({result:"Failure"}));
+                    }
                     requestResults = [];
                  }
+                 
           } else {
-          console.log(error);
+          // console.log(error);
           }
         });
-        customTags = [];
     }
-    // var url = "http://8tracks.com/explore/";
-    // for (var i = 0; i < 2; i++) {
-    //     if (i == 0) {
-    //       url += tags[i].class;
-    //     } else {
-    //       url += "+"+tags[i].class;
-    //     }
-    // }
-    // url += "/popular"
-    // console.log(url);
-    // var returnValues = null;
-    // var i = 0;
-    // var newTags = tags;
-    // // Check amount of playlists.
-    // for (i = 5; i > 0; i--) {
-    //   newTags = newTags.splice(0, i);
-    //   console.log("Trying to find: " + newTags);
-    //   returnValues = parseBody(body, newTags);
-    //   if (returnValues.iframes.length > 0) {
-    //     i = 0;
-    //   } else {
-    //     newTags = tags;
-    //   }
-    // }
+
 }
 
 // Use for every playlist returned from 
@@ -184,10 +171,15 @@ app.post('/findPhotoTags', function(req, res) {
 
     if (image_url.indexOf("jpg") > -1 || image_url.indexOf("jpeg") > -1 || image_url.indexOf("png") > -1 ) {
        clarifai_client.tagFromUrls('image', image_url, function(err, results) {
-          console.log(err);
-          console.log(results);
-
-          var results = getEightTracksHTML(results.tags, res);
+          if (err) {
+              console.log(err);
+              console.log(err.results[0].result);
+              res.send(JSON.stringify({ result: "Failure"}));
+          } else {
+            // console.log(err);
+            // console.log("TAG LENGTH: " + results.tags.length);
+            var results = getEightTracksHTML(results.tags, res);
+          }
        }, null);
     } else {
 
