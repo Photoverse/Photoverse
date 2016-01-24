@@ -46,7 +46,7 @@ clarifai_client.getAccessToken(function(err, accessToken) {
   }
 });
 
-function parseBody(body) {
+function parseBody(body, tags) {
     
     var $ = cheerio.load(body);
 
@@ -60,8 +60,10 @@ function parseBody(body) {
 	for(var index in playlists) {
 		urls[index] = iframeText(index, playlists[index]);
 	}
+
+  var mainTags = tags.slice(0,2);
 	
-	return {"iframes": urls};
+	return {"iframes": urls, "tags": mainTags};
 }
 
 // Request address and return it's HTML
@@ -80,7 +82,7 @@ function getEightTracksHTML(tags, res) {
     
     request(url, function(error, response, body) {
       if(!error && response.statusCode == 200) {
-			res.send(JSON.stringify(parseBody(body)));
+			 res.send(JSON.stringify(parseBody(body, tags)));
       } else {
 			console.log(error);
       }
