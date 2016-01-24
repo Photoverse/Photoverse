@@ -51,19 +51,19 @@ function parseBody(body, tags) {
     var $ = cheerio.load(body);
 
     var playlists = [];
-	var urls = [];
-	
-	$('.quick_add').each(function(i, elem) {
-		playlists.push(elem.attribs['data-mix_id']);
-	});
+  	var urls = [];
+  	
+  	$('.quick_add').each(function(i, elem) {
+  		playlists.push(elem.attribs['data-mix_id']);
+  	});
 
-	for(var index in playlists) {
-		urls[index] = iframeText(index, playlists[index]);
-	}
+  	for(var index in playlists) {
+  		urls[index] = iframeText(index, playlists[index]);
+  	}
 
-  var mainTags = tags.slice(0,2);
-	
-	return {"iframes": urls, "tags": mainTags};
+    var mainTags = tags.slice(0,2);
+  	
+  	return {"iframes": urls, "tags": mainTags};
 }
 
 // Request address and return it's HTML
@@ -77,12 +77,12 @@ function getEightTracksHTML(tags, res) {
           url += "+"+tags[i].class;
         }
     }
-    url += "/popular"
+    // url += "/popular"
     console.log(url);
     
     request(url, function(error, response, body) {
       if(!error && response.statusCode == 200) {
-			 res.send(JSON.stringify(parseBody(body, tags)));
+			   res.send(JSON.stringify(parseBody(body, tags)));
       } else {
 			console.log(error);
       }
