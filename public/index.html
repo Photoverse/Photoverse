@@ -35,26 +35,26 @@
                     $(".tag_list > li:first-child > .content > ul > img").remove();
 
                     for (var iframe in returnedData.iframes) {
-                    	count += 1;
-                    	// if (count <= 2) {
-                    		$(".tag_list > li:first-child > .content > ul").append("<li>"+returnedData.iframes[iframe].iframe+"</li>");
-                    	// }
+                        count += 1;
+                        // if (count <= 2) {
+                        $(".tag_list > li:first-child > .content > ul").append("<li>" + returnedData.iframes[iframe].iframe + "</li>");
+                        // }
                     }
 
                     var tags = "";
 
                     for (var tag in returnedData.tags) {
-                    	tags += returnedData.tags[tag].class + " ";
+                        tags += returnedData.tags[tag].class + " ";
                     }
 
-                    $(".tag_list > li:first-child > .tagImages").append("<p>"+tags+"</p>");
+                    $(".tag_list > li:first-child > .tagImages").append("<p>" + tags + "</p>");
                 }
             });
         }
 
         function createSearch(url) {
-        	var tags = "<li><div class='tagImages'><img src="+url+" /></div><div class='content'><ul><img src='pictures/ajax-loader.gif'/></ul></div></li>"
-        	$(".tag_list").prepend(tags);
+            var tags = "<li><div class='tagImages'><img src=" + url + " /></div><div class='content'><ul><img src='pictures/ajax-loader.gif'/></ul></div></li>"
+            $(".tag_list").prepend(tags);
         }
     </script>
 </head>
@@ -68,20 +68,20 @@
                     <img id="main-logo" class="main-logo" src="Pictures/logo.png">
                     <p class="description">Photoverse lets you find a playlist for any situation! Just upload a picture </p>
                     <div class="down_arrow_container">
-	                    <a id="get-started" href="#page2">
-	                        <img src="pictures/DownArrow.png" class="DownArrow">
-	                    </a>
-	                </div>
+                        <a id="get-started" href="#page2">
+                            <img src="pictures/DownArrow.png" class="DownArrow">
+                        </a>
+                    </div>
                 </div>
             </div>
             <!-- Page 2 is where the user uploads the photo, it also displays their image -->
             <div id="page2" class="page2 page">
                 <h2 class="sub_heading">Try It Out!</h2>
                 <div class="input_field">
-	                <input id="image_url" name="image_url" class="" placeholder="Paste your link here..."></input>
-	                <!-- <span contenteditable="true">Paste your link here...</span> -->
-	                <a onclick="callbackend()" class="">Submit</a>
-	            </div>
+                    <input id="image_url" name="image_url" class="" placeholder="Paste your link here...">
+                    <!-- <span contenteditable="true">Paste your link here...</span> -->
+                    <a onclick="callbackend()" id="submit" class="">Submit</a>
+                </div>
             </div>
             <!-- Page 3 displays the results-->
             <div id="page3" class="page3">
@@ -93,7 +93,7 @@
                     </ul>
                 </div>
                 <div class="tryagainArea">
-                	<a class="finished" href="#">I want to try it again!</a>
+                    <a class="finished" id="finished" href="#">I want to try it again!</a>
                 </div>
             </div>
 
