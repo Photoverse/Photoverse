@@ -41,7 +41,9 @@ clarifai_client = new Clarifai({
 clarifai_client.getAccessToken(function(err, accessToken) {
 	if (!err) {
 	  clarifai_access_token = accessToken;
-	}
+	} else {
+    console.log("Error getting an access token.");
+  }
 });
 
 function parseBody(body) {
@@ -125,9 +127,10 @@ app.post('/findPhotoTags', function(req, res) {
     var image_url = req.body.image_url;
 
     if (image_url.indexOf("jpg") > -1 || image_url.indexOf("jpeg") > -1 || image_url.indexOf("png") > -1 ) {
-	 
        clarifai_client.tagFromUrls('image', image_url, function(err, results) {
+          console.log(err);
           console.log(results);
+
           var results = getEightTracksHTML(results.tags, res);
        }, null);
     } else {
@@ -135,7 +138,7 @@ app.post('/findPhotoTags', function(req, res) {
         res.send(JSON.stringify({ result: "Failure" }));
 
         return;
-        
+
         // var website_url = req.body.image_url;
 
         // console.log(website_url);
