@@ -21,6 +21,18 @@
 	<h1>Photoverse</h1>
 	<input name="image_url" id="image_url" type="url">
 	<button onclick="callbackend()">Submit</button>
+	<br />
+	<br />
+
+	<input name="image_file" id="image_file" type="file">
+	<button onclick="callbackendFile()">Submit</button>
 	<div id="results"></div>
+
+	<br />
+	<form action="http://www.jalsemgeest.com/uploadImageForPhotoverse.php" method="post" enctype="multipart/form-data">
+    Select image to upload:
+    <input type="file" name="fileToUpload" id="fileToUpload">
+    <input type="submit" value="Upload Image" name="submit">
+</form>
 </body>
 </html>

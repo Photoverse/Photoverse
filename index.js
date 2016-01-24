@@ -98,6 +98,8 @@ app.use(express.static(__dirname + "/public"));
 var server = require('http').createServer(app);
 var port = process.env.PORT || 3000;
 
+var allSongs = [];
+
 server.listen(port, function() {
 
 	// var url = "https://upload.wikimedia.org/wikipedia/commons/0/00/Wgretz_edit2.jpg"
@@ -109,14 +111,99 @@ server.listen(port, function() {
 	// }, null);
 });
 
+var totalLength = null;
+
+function stringStartsWith (string, prefix) {
+    return string.slice(0, prefix.length) == prefix;
+}
+
+function haveAllFiles(tags) {
+    console.log(tags);
+}
+
 app.post('/findPhotoTags', function(req, res) {
-    console.log(req.body);
     var image_url = req.body.image_url;
+
+    if (image_url.indexOf("jpg") > -1 || image_url.indexOf("jpeg") > -1 || image_url.indexOf("png") > -1 ) {
 	 
-   clarifai_client.tagFromUrls('image', image_url, function(err, results) {
-      console.log(results);
-      var results = getEightTracksHTML(results.tags, res);
-   }, null);
+       clarifai_client.tagFromUrls('image', image_url, function(err, results) {
+          console.log(results);
+          var results = getEightTracksHTML(results.tags, res);
+       }, null);
+    } else {
+
+        res.send(JSON.stringify({ result: "Failure" }));
+
+        return;
+        
+        // var website_url = req.body.image_url;
+
+        // console.log(website_url);
+
+        // request(website_url, function(error, response, body) {
+        //   if(!error && response.statusCode == 200) {
+            
+        //     var $ = cheerio.load(body);
+
+        //     var resultingTags = [];
+
+        //     var urls = [];
+          
+        //     $('img').each(function(i, elem) {
+        //       var toPush = elem.attribs['src'];
+        //       if (stringStartsWith(toPush, "//")) {
+        //         toPush = toPush.substring(2);
+        //       }
+        //       if (!stringStartsWith(toPush, "http://")) {
+        //         toPush = "http://"+toPush;
+        //       }
+        //       urls.push(toPush);
+        //     });
+
+        //     // console.log(urls);
+
+        //     // console.log(urls.length);
+
+        //     // totalLength = urls.length;
+        //     totalLength = 5;
+        //     var totalCount = 0;
+
+        //     for (var i = 0; i < 5; i++) {
+        //         // console.log(urls[i]);
+        //         clarifai_client.tagFromUrls('image', urls[i], function(err, results) {
+        //               console.log(err);
+        //               console.log(results);
+        //               for (var x = 0; x < results.tags.length; x++) {
+        //                 if (resultingTags[results.tags[x].class] == null) {
+        //                   resultingTags[results.tags[x].class] = 1;
+        //                 } else {
+        //                   resultingTags[results.tags[x].class] = resultingTags[results.tags[x].class] + 1;
+        //                 }
+        //               }
+        //               totalCount += 1;
+        //               if (totalCount == totalLength) {
+        //                   haveAllFiles(resultingTags);
+        //               }
+        //            }, null);
+        //     }
+
+
+
+        //   res.send(JSON.stringify(parseBody(body)));
+        //   } else {
+        //   console.log(error);
+        //   }
+        // });
+
+        
+
+
+
+
+
+    }
+
+
 });
 
 
