@@ -8,60 +8,7 @@
     <!-- jQuery -->
     <script src="js/jquery-2.2.0.min.js"></script>
     <!-- JavaScript -->
-    <script src="js/main.js"></script>
-    <script>
-        function callbackend() {
-
-        	var url = document.getElementById("image_url").value;
-
-        	if (url.length < 5 || (!url.indexOf(".jpg") > -1 && url.indexOf(".jpeg") > -1 && url.indexOf(".png") > -1)) {
-        		return;
-        	}
-
-            console.log(url);
-            createSearch(url);
-            $.ajax({
-                method: "POST",
-                url: "findPhotoTags",
-                data: {
-                    image_url: url
-                },
-                success: function (data) {
-                    var returnedData = $.parseJSON(data);
-
-                    if (returnedData.success == "Failure") {
-                    	$(".tag_list > li:first-child").remove();
-                    }
-
-                    console.log(returnedData);
-
-                    var count = 0;
-
-                    $(".tag_list > li:first-child > .content > ul > img").remove();
-
-                    for (var iframe in returnedData.iframes) {
-                        if (count <= 5) {
-                        	$(".tag_list > li:first-child > .content > ul").append("<li>" + returnedData.iframes[iframe].iframe + "</li>");
-                        }
-                        count += 1;
-                    }
-
-                    var tags = "";
-
-                    for (var tag in returnedData.tags) {
-                        tags += returnedData.tags[tag].class + " ";
-                    }
-
-                    $(".tag_list > li:first-child > .tagImages").append("<p>" + tags + "</p>");
-                }
-            });
-        }
-
-        function createSearch(url) {
-            var tags = "<li><div class='tagImages'><img src=" + url + " /></div><div class='content'><ul><img src='pictures/ajax-loader.gif'/></ul></div></li>"
-            $(".tag_list").prepend(tags);
-        }
-    </script>
+    <!-- // <script src="js/main.js"></script> -->
 </head>
 
 <body>
@@ -85,7 +32,7 @@
                 <div class="input_field">
                     <input id="image_url" name="image_url" class="" placeholder="Paste your link here...">
                     <!-- <span contenteditable="true">Paste your link here...</span> -->
-                    <a onclick="callbackend()" id="submit" class="">Submit</a>
+                    <a id="submit_image_buttom" class="">Submit</a>
                 </div>
             </div>
             <!-- Page 3 displays the results-->
@@ -104,6 +51,8 @@
 
         </center>
     </div>
+    <script src="/socket.io/socket.io.js"></script>
+    <script src="js/main.js"></script>
 </body>
 
 </html>
