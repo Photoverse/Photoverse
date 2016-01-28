@@ -13,6 +13,16 @@ To install:
 ```
 npm install
 ```
+To configure:
+```
+Create a constants.js file in the home directory.
+function Constants() {
+	this.clarifai_access_token_id = "<YOUR_CLARIFAI_ACCESS_TOKEN_ID>";
+	this.clarifai_access_token_secret = "<YOUR_CLARIFAI_ACCESS_TOKEN_SECRET>";
+}
+
+module.exports = Constants;
+```
 To run:
 ```
 node index.js
