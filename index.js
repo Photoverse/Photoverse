@@ -33,9 +33,12 @@ app.use(stylus.middleware({
          }
      }));
 
+var Constants = require('./constants.js');
+var constant = new Constants();
+
 clarifai_client = new Clarifai({
-  id: "7XcRYTSUu-X4tt2-3ojUsaepRtfPpHgk5VtvQn0n",
-  secret: "8KU5maZusTMVL3PL7ZbXw_VOuD42shAhJM-1RrAB"
+  id: constant.clarifai_access_token_id,
+  secret: constant.clarifai_access_token_secret
 });
 
 clarifai_client.getAccessToken(function(err, accessToken) {
