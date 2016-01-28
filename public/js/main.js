@@ -30,7 +30,7 @@ $(function() {
     var socket = io();
 
     // Buttons
-    var $submitButton = $('#submit_image_buttom');
+    var $submitButton = $('#submit_image_button');
 
     // Input Fields
     var $urlInputField = $('#image_url');
