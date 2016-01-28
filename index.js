@@ -71,14 +71,89 @@ function haveAllFiles(tags) {
     console.log(tags);
 }
 
+function parseBody(body, tags) {
+    
+    var $ = cheerio.load(body);
+
+    var playlists = [];
+    var urls = [];
+    
+    $('.quick_add').each(function(i, elem) {
+      playlists.push(elem.attribs['data-mix_id']);
+    });
+
+    for(var index in playlists) {
+      urls[index] = iframeText(index, playlists[index]);
+    }
+    
+    return {"iframes": urls, "tags": tags};
+}
+
+function chooseOne(results) {
+    for (var i = results.length - 1; i >= 0; i--) {
+        if (results[i].iframes.length < 12 || i == 0) {
+            return results[i];
+        }
+    }
+}
+
+// Request address and return it's HTML
+function getEightTracksHTML(tags, res) {
+    
+    var requestResults = [];
+    var tempCounter = 0;
+
+    for (var i = 1; i < 6 && i < tags.length; i++) {
+        var url = "http://8tracks.com/explore/";
+        for (var x = 0; x < i; x++) {
+            if (x == 0) {
+              url += tags[x].class;
+            } else {
+              url += "+"+tags[x].class;
+            }
+        }
+
+        request(url, function(error, response, body) {
+          if(!error && response.statusCode == 200) {
+
+                var href = ""+response.request.uri.href;
+                 if (href != "http://8tracks.com/explore/all") {
+                    requestResults.push(parseBody(body,tags));
+                 }
+                 tempCounter += 1;
+                 if (tempCounter >= 5) {
+                    if (requestResults.length > 0) {
+                        var results = chooseOne(requestResults);
+                        res.send({results: results, url: url});
+                    } else {
+                        return {results: "Failure"};
+                    }
+                 }
+                 
+          } else {
+              return {results: "Failure"};
+          }
+        });
+    }
+
+}
+
+// Use for every playlist returned from 
+function iframeText (resultNumber, playlistId) {
+  return {"iframe": iframeStart + playlistId + iframeEnd}; 
+}
+
 app.post('/findPhotoTags', function(req, res) {
+    console.log("Getting a request");
     var image_url = req.body.image_url;
+    console.log(image_url);
+    console.log(req.body);
 
     if (image_url.indexOf("jpg") > -1 || image_url.indexOf("jpeg") > -1 || image_url.indexOf("png") > -1 ) {
        clarifai_client.tagFromUrls('image', image_url, function(err, results) {
           if (err) {
               console.log(err);
-              console.log(err.results[0].result);
+              // console.log(err.results[0].result);
               res.send(JSON.stringify({ result: "Failure"}));
               return;
           } else {
