@@ -14,7 +14,7 @@ $(function() {
            $("html, body").animate({ scrollTop: windowSize });
         });
         
-        $('#submit_image_button').click(function () {
+        $('#submit_image_buttom').click(function () {
            $("html, body").animate({ scrollTop: windowSize*2 });
         });
         
